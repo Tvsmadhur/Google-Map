@@ -1,5 +1,6 @@
 var drawingManager;
 var selectedShape;
+let Shape;
 
 var selectedColor;
 var all_overlays = []
@@ -96,6 +97,8 @@ function initMap()
     drawingManager.setMap(map);
 
 
+
+
     // Remove The shape of polygon we draw
     function clearSelection()
     {
@@ -109,7 +112,8 @@ function initMap()
     {
         clearSelection();
         selectedShape = shape;
-        shape.setEditable(true);
+        shape.setEditable(false);
+
     }
 
     function deleteSelectedShape()
@@ -163,6 +167,9 @@ function initMap()
     // Area calculation of polygon
     google.maps.event.addListener(drawingManager, 'polylinecomplete', function (e)
     {
+        console.log("selected shape", selectedShape.getPath().getArray())
+
+
         var x = e.getPath().getArray();
         let y = []
         x.filter((ele, index, arr) =>
@@ -174,9 +181,11 @@ function initMap()
                     lat: lat,
                     lng: lng
                 }
+
                 y.push(x);
             }
         })
+
         var pathLeft = [];
         for (let i = 0; i < y.length; i++) {
             pathLeft[i] = new google.maps.LatLng(y[i].lat, y[i].lng)
